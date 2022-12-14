@@ -35,27 +35,24 @@ for elem in sorted_numbers:
         elem = ' '*(len(sorted_numbers[0])-len(elem)) + elem
     sorted_numbers_with_whitespace.append(elem)
 
-sorted_numbers_with_whitespace_after_replace = sorted_numbers_with_whitespace
 for number_position in range(len(sorted_numbers[0])):
-    number_positions_list = [digit[number_position] for digit in sorted_numbers_with_whitespace]
+    number_positions_list = [number[number_position] for number in sorted_numbers_with_whitespace
+                             if number[number_position] != ' ']
     number_positions_dict = {num: digit for num, digit in enumerate(number_positions_list)}
     print(number_positions_dict)
-    for number in range(n):
+    for number in range(len(number_positions_dict)):
         index_min = next(key for key, value in number_positions_dict.items()
                          if value == min(number_positions_dict.values()))
         value_min = number_positions_dict.pop(index_min)
-        if value_min not in ('9', ' '):
-            elem = sorted_numbers_with_whitespace[index_min].replace(value_min, '9', 1)
+        if value_min != '9':
+            sorted_numbers_with_whitespace[index_min] = \
+                sorted_numbers_with_whitespace[index_min].replace(value_min, '9', 1)
             k -= 1
-        else:
-            elem = sorted_numbers_with_whitespace[index_min]
-        sorted_numbers_with_whitespace_after_replace[index_min] = elem
-        if k == 0:
-            break
+            if k == 0:
+                break
     if k == 0:
         break
-    sorted_numbers_with_whitespace = sorted_numbers_with_whitespace_after_replace
-print(sorted_numbers_with_whitespace_after_replace)
-sum2 = sum(map(int, sorted_numbers_with_whitespace_after_replace))
+print(sorted_numbers_with_whitespace)
+sum2 = sum(map(int, sorted_numbers_with_whitespace))
 print('sum2', sum2)
 print('max difference:', sum2-sum1)
